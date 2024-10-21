@@ -1,0 +1,106 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+                
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="fontawesome/css/all.css">
+        <link rel="stylesheet" href="css/custom.css">
+    </head>
+
+    <body>
+        <nav class="navbar navbar-dark bg-dark">
+            <a href="index.html" class="navbar-brand mb-0 h1 mx-auto">Contact Book</a>
+        </nav>
+
+        <br/>
+
+        <form id="editForm">
+            <div class="form-group">
+                <label for="firstname">First name</label>
+                <input type="text" class="form-control"  name="firstname" id="firstname"><br/>
+            </div>
+
+            <div class="form-group">
+                <label for="lastname">Last name</label>
+                <input type="text" class="form-control"  name="lastname" id="lastname"><br/>
+            </div>
+
+            <div class="form-group">
+                <label for="mobile">Mobile</label>
+                <input type="text" class="form-control"  name="mobile" id="mobile"><br/>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" class="form-control"  name="email" id="email" ><br/>
+            </div>
+
+            <div class="form-group">
+                <label for="avatar">Select a file</label><br/>
+                <input type="file" class="form-control"  name="avatar" id="avatar"><br/>
+            </div>
+
+            <button type="submit" class="btn btn-dark" id="submitForm">Submit</button>
+        </form>
+        <br/>
+
+        <footer class="footer fixed-bottom bg-dark">
+            <div class="container">
+
+                <div class="row no-gutters">
+
+                    <div class="col" style="text-align:center; color:white">
+                        <button id="homeLink" type="button" class="btn btn-dark"><i class="fa fa-home"></i></button>
+                    </div>
+
+                    <div class="col" style="text-align:center; color:white">
+                        <button id="editContact" type="button" class="btn btn-dark"><i class="fa fa-edit"></i></button>
+                    </div>
+
+                    <div class="col" style="text-align:center; color:white">
+                        <button id="deleteContact" type="button" class="btn btn-dark"><i class="fa fa-trash-alt"></i></button>
+                    </div>
+
+                </div>
+            </div>
+        </footer>
+
+        <script src="config.js"></script>
+
+        <script>
+            document.getElementById("submitForm").addEventListener('click', submitForm);
+            document.getElementById("homeLink").addEventListener('click', homeLink);
+
+            function submitForm(e){
+                e.preventDefault();
+
+                const form = new FormData(document.querySelector('#editForm'));
+                form.append('apiKey', apiKey);
+
+                fetch(rootPath + 'controller/insert-contact/', {
+                    method: 'POST',
+                    headers: {'Accept': 'application/json, *.*'},
+                    body: form
+                })
+                .then(function(response){
+                    return response.text();
+                })
+                .then(function(data){
+                    if(data == "1"){
+                        alert("Contact added.");
+                        homeLink();
+                    } else{
+                        alert(data);
+                        homeLink();
+                    }
+                })
+            }
+
+            function homeLink(){
+                window.open("index.html", "_self");
+            }
+        </script>
+
+    </body>
+</html>
